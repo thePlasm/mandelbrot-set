@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='utf-8'>
+		<title>
+			Mandelbrot Gen
+		</title>
+		<script>
+			function gen() {
+				var canvas = document.getElementById("canvas");
+				canvas.width = +document.getElementById('width').value;
+				canvas.height = +document.getElementById('height').value;
+				var ctx = canvas.getContext("2d");
+				var maxnum = 2;
+				var maxiter = +document.getElementById('limit').value;
+				var minx = +document.getElementById('minx').value;
+				var maxx = +document.getElementById('maxx').value;
+				var miny = +document.getElementById('miny').value;
+				var maxy = +document.getElementById('maxy').value;
+				for (var dispy = 0; dispy < canvas.height; dispy++) {
+					for (var dispx = 0; dispx < canvas.width; dispx++) {
+						var x = dispx / canvas.width * (maxx - minx) + minx;
+						var y = dispy / canvas.height * (maxy - miny) + miny;
+						var iteration = 0;
+						var kx = 0;
+						var ky = 0;
+						while (iteration < maxiter && (kx*kx + ky*ky) < maxnum*maxnum) {
+							var xx = kx*kx - ky*ky + x;
+							ky = 2*kx*ky + y;
+							kx = xx;
+							iteration++;
+						}
+						if (maxiter == iteration) {
+							ctx.fillStyle = "#000";
+							ctx.fillRect(dispx, dispy, 1, 1);
+						}
+						else {
+							ctx.fillStyle = "#FFF";
+							ctx.fillRect(dispx, dispy, 1, 1);
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		Width:
+		<input type='text' id='width'>
+		<br>
+		Height:
+		<input type='text' id='height'>
+		<br>
+		Iterations:
+		<input type='text' id='limit'>
+		<br>
+		Min X:
+		<input type='text' id='minx'>
+		<br>
+		Max X:
+		<input type='text' id='maxx'>
+		<br>
+		Min Y:
+		<input type='text' id='miny'>
+		<br>
+		Max Y:
+		<input type='text' id='maxy'>
+		<br>
+		<input type='button' onclick='gen();' value='Generate Set'>
+		<br>
+		<canvas id='canvas'></canvas>
+	</body>
+</html>
